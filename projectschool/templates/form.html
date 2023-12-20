@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+        <style>
+        form {
+            border:2px solid blue;
+            padding:100px;
+            text-align:center;
+            background-color: #cccccc;
+            color:blue;
+            }
+    </style>
+
+</head>
+<body>
+<form action="button" method="POST" id="personForm" data-cities-url="{% url 'ajax_load_cities' %}">
+    {% csrf_token %}
+    <h2>Registration</h2></br>
+    <input type="text" name="name" placeholder="Name"></br>
+    <input type="date" name="dob" placeholder="DOB"></br>
+    <p>Select Gender</p>
+    <input type="radio"> Male
+    <input type="radio"> Female<br>
+    <input type="number" name="number" placeholder="Phone Number"></br>
+    <input type="email" name="email" placeholder="Email"></br>
+    <input type="text" name="address" placeholder="Enter Address"></br>
+<!--      <input type="submit" onclick="myFunction()">-->
+
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+
+{% for msg in messages %}
+{{msg}}<br>
+<a href="demo">Home</a>
+{% endfor %}
+
+
+<script>
+    function myFunction() {
+    alert('order confirmed');
+
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_department").change(function () {
+        const url = $("#personForm").attr("data-cities-url");  // get the url of the `load_cities` view
+        const departmentId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'department_id': departmentId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_course").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (course) {
+                    html_data += `<option value="${course.id}">${course.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_course").html(html_data);
+
+                */
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>
